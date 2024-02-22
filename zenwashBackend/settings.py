@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'zenwashBackend.wsgi.application'
 DATABASES = {
 'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'jkuatcu',
+    'NAME': 'zenwash',
     'USER': os.getenv('USER'),
     'PASSWORD': os.getenv('PASSWORD'),
     'HOST': 'localhost',
@@ -90,6 +90,8 @@ DATABASES = {
     }
 }
 
+#Auth user model
+AUTH_USER_MODEL = "account.CustomUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
