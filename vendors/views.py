@@ -76,8 +76,12 @@ class VendorViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-    def destroy(self, pk = None):
+    def destroy(self, request, pk = None):
         Vendor.objects.get(id = pk).delete()
+        return Response(
+            {'detail': 'Vendor deleted', 'code': 200},
+            status=status.HTTP_200_OK
+        )
 
 class ProductViewSet(viewsets.ModelViewSet):
     """"
@@ -187,7 +191,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-    def perform_destroy(self, pk = None):
+    def destroy(self, request, pk = None):
         """"
             Args:
                 pk: id of the product to be deleted
@@ -195,6 +199,10 @@ class ProductViewSet(viewsets.ModelViewSet):
                 None
         """
         Product.objects.get(id = pk).delete()
+        return Response(
+            {'detail': 'Product deleted', 'code': 200},
+            status=status.HTTP_200_OK
+        )
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
