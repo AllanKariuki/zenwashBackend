@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import CustomUser, UserProfile
 from .serializers import (
     CustomUserSerializer,
     UserProfileSerializer
 )
-
 
 class CustomUserViewSet(viewsets.ViewSet):
     def list(self, request):
@@ -91,6 +91,7 @@ class CustomUserViewSet(viewsets.ViewSet):
         )
         
 class UserProfileViewSet(viewsets.ViewSet):
+    parser_classes = (MultiPartParser, FormParser)
     def list(self, request):
         queryset = UserProfile.objects.all()
         serializer = UserProfileSerializer(queryset, many = True)
