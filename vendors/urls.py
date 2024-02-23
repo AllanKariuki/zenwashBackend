@@ -6,6 +6,7 @@ from .views import (
     OrderViewSet,
     ServicesViewSet,
     BusinessTypeViewSet,
+    ServiceImageViewSet
 )
 
 router = DefaultRouter()
@@ -14,6 +15,7 @@ router.register('products', ProductViewSet, basename='product')
 router.register('orders', OrderViewSet, basename='order')
 router.register('services', ServicesViewSet, basename='services')
 router.register('business_types', BusinessTypeViewSet, basename='business_types')
+router.register('service_images', ServiceImageViewSet, basename='service_images')
 
 urlpatterns = [
     path('', include(router.urls))

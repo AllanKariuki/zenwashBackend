@@ -24,6 +24,13 @@ class Services(models.Model):
     def __str__(self):
         return self.name
 
+class ServiceImage(models.Model):
+    service = models.ForeignKey(Services, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='services', blank=True, null=True)
+
+    def __str__(self):
+        return self.service.name
+
 class Product(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
