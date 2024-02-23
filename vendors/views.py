@@ -1,10 +1,168 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Vendor, Product, Order
-from account.models import CustomUser, UserProfile
-from .serializers import VendorSerializer, ProductSerializer, OrderSerializer
 
+from .models import Vendor, Product, Order, BusinessType, Services
+from account.models import CustomUser, UserProfile
+from .serializers import (
+    VendorSerializer,
+    ProductSerializer,
+    OrderSerializer,
+    BusinessTypeSerializer,
+    ServicesSerializer
+)
+
+
+class BusinessTypeViewSet(viewsets.ModelViewSet):
+    def list(self, request):
+        business_types = BusinessType.objects.all()
+        serializer = BusinessTypeSerializer(business_types, many=True)
+        if not serializer.data:
+            return Response(
+                {'detail': 'No business types yet'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {'detail': serializer.data},
+            status=status.HTTP_200_OK
+        )
+    def retrieve(self, request, pk=None):
+        try:
+            business_type = BusinessType.objects.get(id = pk)
+        except BusinessType.DoesNotExist:
+            return Response (
+                {'detail': "Could not find Business Type", 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer =BusinessTypeSerializer(business_type)
+
+        if not serializer.data:
+            return Response(
+                {'detail': serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {'detail': serializer.data},
+            status=status.HTTP_200_OK
+        )
+    def create(self, request):
+        serializer = BusinessTypeSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def update(self, request, pk = None):
+        try:
+            business_type = BusinessType.objects.get(id = pk)
+        except BusinessType.DoesNotExist:
+            return Response(
+                {'detail': 'Business Type does not Exist', 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer = BusinessTypeSerializer(business_type, data= request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(
+                {'detail': serializer.errors, 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer.save()
+        return Response(
+            {'detail': 'Update succesful', 'code': 400},
+            status=status.HTTP_200_OK
+        )
+    def destroy(self, request, pk = None):
+        BusinessType.objects.get(id = pk).delete()
+        return Response(
+            {'detail': 'Business Type deleted', 'code': 200},
+            status=status.HTTP_200_OK
+        )
+
+class ServicesViewSet(viewsets.ModelViewSet):
+    def list(self, request):
+        services = Services.objects.all()
+        serializer = ServicesSerializer(services, many=True)
+        if not serializer.data:
+            return Response(
+                {'detail': 'No services yet'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {'detail': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+    def retrieve(self, request, pk=None):
+        try:
+            service = Services.objects.get(id = pk)
+        except Services.DoesNotExist:
+            return Response (
+                {'detail': "Could not find Service", 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer =ServicesSerializer(service)
+
+        if not serializer.data:
+            return Response(
+                {'detail': serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {'detail': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+    def create(self, request):
+        buss_type_id = request.data.get("business_type")
+        vendor_id = request.data.get("vendor")
+
+        try:
+            business_type = BusinessType.objects.get(id = buss_type_id)
+        except BusinessType.DoesNotExist:
+            return Response(
+                {'detail': 'Business Type does not Exist', 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        if not Vendor.objects.filter(id = vendor_id).exists():
+            return Response(
+                {'detail': 'Vendor does not exist', 'code': 400},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = ServicesSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, pk = None):
+        try:
+            service = Services.objects.get(id = pk)
+        except Services.DoesNotExist:
+            return Response(
+                {'detail': 'Service does not Exist', 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer = ServicesSerializer(service, data= request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(
+                {'detail': serializer.errors, 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer.save()
+        return Response(
+            {'detail': 'Update succesful', 'code': 400},
+            status=status.HTTP_200_OK
+        )
+    def destroy(self, request, pk = None):
+        Services.objects.get(id = pk).delete()
+        return Response(
+            {'detail': 'Service deleted', 'code': 200},
+            status=status.HTTP_200_OK
+        )
 
 class VendorViewSet(viewsets.ModelViewSet):
     def create(self, request):
@@ -82,6 +240,8 @@ class VendorViewSet(viewsets.ModelViewSet):
             {'detail': 'Vendor deleted', 'code': 200},
             status=status.HTTP_200_OK
         )
+
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     """"
@@ -219,3 +379,4 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def perform_destroy(self, instance):
         instance.delete()
+
