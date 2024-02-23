@@ -136,14 +136,14 @@ class UserProfileViewSet(viewsets.ViewSet):
         
     def retrieve(self, request, pk=None):
         try:
-            
-            user = CustomUser.objects.get(id = pk)
-        except CustomUser.DoesNotExist:
+            profile = UserProfile.objects.get(id = pk)
+        except UserProfile.DoesNotExist:
             return Response(
                 {'detail': 'User not found', 'code': 404},
                 status=status.HTTP_404_NOT_FOUND
             )
-        serializer = CustomUserSerializer(user)
+        print(profile)
+        serializer = UserProfileSerializer(profile)
         return Response(
             {'details': serializer.data, 'code': 200},
             status=status.HTTP_200_OK
@@ -151,14 +151,14 @@ class UserProfileViewSet(viewsets.ViewSet):
     
     def update(self, request, pk = None):
         try:
-            user = CustomUser.objects.get(id = pk)
-        except CustomUser.DoesNotExist:
+            profile = UserProfile.objects.get(id = pk)
+        except UserProfile.DoesNotExist:
             return Response(
-                {'details': 'Could not find User', 'code': 400},
+                {'details': 'Could not find Profile', 'code': 400},
                 status= status.HTTP_400_BAD_REQUEST
             )
         #Allow change of email but the email should not be changed to an already existing email.  
-        serializer = CustomUserSerializer(user, data = request.data)
+        serializer = UserProfileSerializer(profile, data = request.data, partial = True)
         if serializer.is_valid():
             serializer.save()
             return Response(

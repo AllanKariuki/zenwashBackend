@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.db.models.deletion import CASCADE
+from PIL import Image
 
 from .managers import CustomUserManager
 # Create your models here.
