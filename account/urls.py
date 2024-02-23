@@ -8,7 +8,7 @@ from .views import (
 
 router = DefaultRouter()
 
-router.register(r'accounts', CustomUserViewSet, basename='users')
+router.register(r'users', CustomUserViewSet, basename='users')
 router.register(r'profiles', UserProfileViewSet, basename='users')
 
 urlpatterns = [
