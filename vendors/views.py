@@ -2,14 +2,15 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from .models import Vendor, Product, Order, BusinessType, Services
+from .models import Vendor, Product, Order, BusinessType, Services, ServiceImage
 from account.models import CustomUser, UserProfile
 from .serializers import (
     VendorSerializer,
     ProductSerializer,
     OrderSerializer,
     BusinessTypeSerializer,
-    ServicesSerializer
+    ServicesSerializer,
+    ServiceImageSerializer,
 )
 
 
@@ -242,6 +243,80 @@ class VendorViewSet(viewsets.ModelViewSet):
         )
 
 
+class ServiceImageViewSet(viewsets.ModelViewSet):
+    def create(self, request):
+        service_id = request.data.get("service")
+        if not Services.objects.filter(id = service_id).exists():
+            return Response(
+                {'detail': 'Service does not exist', 'code': 400},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = ServiceImageSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def list(self, request):
+        service_images = ServiceImage.objects.all()
+        serializer = ServiceImageSerializer(service_images, many=True)
+        if not serializer.data:
+            return Response(
+                {'detail': 'No service images yet'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {'detail': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+    def retrieve(self, request, pk=None):
+        try:
+            service_image = ServiceImage.objects.get(id = pk)
+        except ServiceImage.DoesNotExist:
+            return Response (
+                {'detail': "Could not find Service Image", 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer =ServiceImageSerializer(service_image)
+        if not serializer.data:
+            return Response(
+                {'detail': serializer.errors, 'code': 400},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {'detail': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+    def update(self, request, pk = None):
+        try:
+            service_image = ServiceImage.objects.get(id = pk)
+        except ServiceImage.DoesNotExist:
+            return Response(
+                {'detail': 'Service Image does not Exist', 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer = ServiceImageSerializer(service_image, data= request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(
+                {'detail': serializer.errors, 'code': 400},
+                status= status.HTTP_400_BAD_REQUEST
+            )
+        serializer.save()
+        return Response(
+            {'detail': 'Update succesful', 'code': 400},
+            status=status.HTTP_200_OK
+        )
+
+    def destroy(self, request, pk = None):
+        ServiceImage.objects.get(id = pk).delete()
+        return Response(
+            {'detail': 'Service Image deleted', 'code': 200},
+            status=status.HTTP_200_OK
+        )
 
 class ProductViewSet(viewsets.ModelViewSet):
     """"
