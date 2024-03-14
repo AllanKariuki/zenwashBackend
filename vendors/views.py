@@ -14,7 +14,7 @@ from .serializers import (
 )
 
 
-class BusinessTypeViewSet(viewsets.ModelViewSet):
+class BusinessTypeViewSet(viewsets.ViewSet):
     def list(self, request):
         business_types = BusinessType.objects.all()
         serializer = BusinessTypeSerializer(business_types, many=True)
@@ -80,7 +80,7 @@ class BusinessTypeViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-class ServicesViewSet(viewsets.ModelViewSet):
+class ServicesViewSet(viewsets.ViewSet):
     def list(self, request):
         services = Services.objects.all()
         serializer = ServicesSerializer(services, many=True)
@@ -165,7 +165,7 @@ class ServicesViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-class VendorViewSet(viewsets.ModelViewSet):
+class VendorViewSet(viewsets.ViewSet):
     def create(self, request):
 
         profile_id = request.data.get("profile")
@@ -243,7 +243,7 @@ class VendorViewSet(viewsets.ModelViewSet):
         )
 
 
-class ServiceImageViewSet(viewsets.ModelViewSet):
+class ServiceImageViewSet(viewsets.ViewSet):
     def create(self, request):
         service_id = request.data.get("service")
         if not Services.objects.filter(id = service_id).exists():
@@ -318,7 +318,7 @@ class ServiceImageViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ViewSet):
     """"
         Args:
             Product viewset that is responsible for creating, listing, retrieving, updating and deleting products.
@@ -439,7 +439,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(viewsets.ViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
