@@ -61,6 +61,7 @@ class CustomUserViewSet(viewsets.ViewSet):
             {'details': serializer.data, 'code': 200},
             status=status.HTTP_200_OK
             )
+
     def update(self, request, pk = None):
         try:
             user = CustomUser.objects.get(id = pk)
@@ -70,11 +71,11 @@ class CustomUserViewSet(viewsets.ViewSet):
                 status= status.HTTP_400_BAD_REQUEST
             )
         #Allow change of email but the email should not be changed to an already existing email.  
-        serializer = CustomUserSerializer(user, data = request.data)
+        serializer = CustomUserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {'details': 'Updated succefully', 'code':200},
+                {'details': 'Updated successfully', 'code' :  200},
                 status=status.HTTP_200_OK
             )
         else:
@@ -83,7 +84,7 @@ class CustomUserViewSet(viewsets.ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
     
-    def destroy(self, request, pk = None):
+    def destroy(self, request, pk=None):
         CustomUser.objects.get(id = pk).delete()
         return Response(
             {'detail': 'Success', 'code': 200},
@@ -92,6 +93,7 @@ class CustomUserViewSet(viewsets.ViewSet):
         
 class UserProfileViewSet(viewsets.ViewSet):
     parser_classes = (MultiPartParser, FormParser)
+
     def list(self, request):
         queryset = UserProfile.objects.all()
         serializer = UserProfileSerializer(queryset, many = True)
@@ -136,7 +138,7 @@ class UserProfileViewSet(viewsets.ViewSet):
         
     def retrieve(self, request, pk=None):
         try:
-            profile = UserProfile.objects.get(id = pk)
+            profile = UserProfile.objects.get(id=pk)
         except UserProfile.DoesNotExist:
             return Response(
                 {'detail': 'User not found', 'code': 404},
@@ -162,7 +164,7 @@ class UserProfileViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {'details': 'Updated succefully', 'code':200},
+                {'details': 'Updated successfully', 'code':200},
                 status=status.HTTP_200_OK
             )
         else:

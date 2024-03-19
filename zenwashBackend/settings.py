@@ -129,6 +129,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+TOKEN_LIFESPAN = 3600
+
 #Media Files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
