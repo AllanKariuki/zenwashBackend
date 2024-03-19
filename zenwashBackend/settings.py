@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'vendors',
     'users',
     'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -98,6 +99,16 @@ DATABASES["default"] = dj_database_url.parse(database_url)
 
 #Auth user model
 AUTH_USER_MODEL = "account.CustomUser"
+AUTH_TOKEN_MODEL = "account.CustomToken"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'account.authentication.CustomAuthentication',
+    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

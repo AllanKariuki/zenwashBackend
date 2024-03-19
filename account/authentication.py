@@ -6,14 +6,18 @@ from rest_framework.authentication import TokenAuthentication
 from .models import CustomToken
 
 def expired_in(token):
+    """Time left to live for token"""
     elapsed_time = timezone.now()-token.created
     time_left = timedelta(seconds = settings.TOKEN_LIFESPAN) - elapsed_time
     return time_left
 
 def has_token_expired(token):
+    """check whether token has expired"""
     return expired_in(token) < timedelta(seconds=0)
 
 def expired_token_handler(token):
+    """Delete expired token and return boolean value of whether token is expired or not"""
+
     is_expired = has_token_expired(token)
     if is_expired:
         token.delete()
