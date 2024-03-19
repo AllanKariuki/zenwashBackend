@@ -23,3 +23,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'user': {'required': False}
         }
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField()

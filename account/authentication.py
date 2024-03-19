@@ -5,7 +5,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.authentication import TokenAuthentication
 from .models import CustomToken
 
-def expired_in(token):
+def expires_in(token):
     """Time left to live for token"""
     elapsed_time = timezone.now()-token.created
     time_left = timedelta(seconds = settings.TOKEN_LIFESPAN) - elapsed_time
@@ -13,7 +13,7 @@ def expired_in(token):
 
 def has_token_expired(token):
     """check whether token has expired"""
-    return expired_in(token) < timedelta(seconds=0)
+    return expires_in(token) < timedelta(seconds=0)
 
 def expired_token_handler(token):
     """Delete expired token and return boolean value of whether token is expired or not"""
