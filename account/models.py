@@ -34,7 +34,7 @@ class UserProfile(models.Model):
 class CustomToken(models.Model):
     key = models.CharField(_("Key"), max_length=40, primary_key=True)
     user = models.OneToOneField(
-        CustomUser, related_name='auth_token',
+        CustomUser, related_name='authentication_token',
         on_delete=models.CASCADE, verbose_name=_("User")
     )
     created = models.DateTimeField(_("Created"), auto_now_add=True)
@@ -43,7 +43,7 @@ class CustomToken(models.Model):
         verbose_name = _("CustomToken")
         verbose_name_plural = _("CustomTokens")
 
-    def save(self):
+    def save(self, *args, **kwargs):
         self.key = self.generate_key()
         return super().save(*args, **kwargs)
 
