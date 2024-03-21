@@ -212,9 +212,8 @@ class UserLoginViewSet(viewsets.ViewSet):
         if not user:
             return Response(
                 {'details': 'Invalid credentials', 'code': 400},
-                status= status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST
             )
-
         try:
             token = CustomToken.objects.get(user=user)
             is_expired, token = expired_token_handler(token)
