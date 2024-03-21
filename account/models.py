@@ -9,6 +9,7 @@ import binascii
 from .managers import CustomUserManager
 # Create your models here.
 
+
 class CustomUser(AbstractUser, PermissionsMixin):
     username = None
     email = models.EmailField(_("Email address"), unique = True)
@@ -18,18 +19,21 @@ class CustomUser(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = ['password']
     
     objects = CustomUserManager()
+
     def __str__(self):
         return self.email
+
 
 class UserProfile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete = CASCADE)
     name = models.CharField(max_length= 100)
     phone_number = models.IntegerField()
     location = models.CharField(max_length= 200)
-    image_url = models.ImageField(upload_to = 'profile_pics', default = 'default.jpg', blank = True, null = True)
+    image_url = models.ImageField(upload_to='profile_pics', default='default.jpg', blank=True, null=True)
     
     def __str__(self):
         return self.name
+
 
 class CustomToken(models.Model):
     key = models.CharField(_("Key"), max_length=40, primary_key=True)
