@@ -6,9 +6,9 @@ from .views import CustomUserViewSet, UserProfileViewSet, UserLoginViewSet, Logo
 router = DefaultRouter()
 
 router.register(r'users', CustomUserViewSet, basename='users')
-router.register(r'profiles', UserProfileViewSet, basename='users')
-router.register(r'login', UserLoginViewSet, basename='users')
-router.register(r'logout', LogoutViewSet, basename='users')
+router.register(r'profiles', UserProfileViewSet, basename='profiles')
+router.register(r'login', UserLoginViewSet, basename='login')
+router.register(r'logout', LogoutViewSet, basename='logout')
 
 urlpatterns = [
     path('', include(router.urls))

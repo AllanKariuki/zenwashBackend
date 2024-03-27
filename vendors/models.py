@@ -1,12 +1,22 @@
+import uuid
+
 from django.db import models
 from account.models import CustomUser, UserProfile
 
+
 class Vendor(models.Model):
     profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    vendor_code = models.CharField(max_length=100, unique=True, editable=False, null= True)
     description = models.TextField()
 
     def __str__(self):
         return self.profile.name
+
+    def save(self, *args, **kwargs):
+        if not self.vendor_code:
+            self.vendor_code = 'VEN' + str(uuid.uuid4())[:5]
+        super().save(*args, **kwargs)
+
 
 class BusinessType(models.Model):
     name = models.CharField(max_length=100)
