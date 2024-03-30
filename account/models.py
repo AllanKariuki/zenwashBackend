@@ -13,6 +13,18 @@ from .managers import CustomUserManager
 class CustomUser(AbstractUser, PermissionsMixin):
     username = None
     email = models.EmailField(_("Email address"), unique = True)
+    name = models.CharField(max_length=100)
+    phone_number = models.IntegerField()
+    national_id = models.IntegerField()
+    user_type = models.CharField(max_length=100)
+    location_lat = models.CharField(max_length=200)
+    location_lon = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
+    bio = models.TextField()
+    image_url = models.ImageField(upload_to='profile_pics', default='default.jpg', blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     password = models.CharField(max_length= 100)
     
     USERNAME_FIELD = 'email'
@@ -22,17 +34,6 @@ class CustomUser(AbstractUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-
-class UserProfile(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete = CASCADE)
-    name = models.CharField(max_length= 100)
-    phone_number = models.IntegerField()
-    location = models.CharField(max_length= 200)
-    image_url = models.ImageField(upload_to='profile_pics', default='default.jpg', blank=True, null=True)
-    
-    def __str__(self):
-        return self.name
 
 
 class CustomToken(models.Model):
