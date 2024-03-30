@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from .models import Vendor, Product, Order, BusinessType, Services, ServiceImage
-from account.models import CustomUser, UserProfile
+from account.models import CustomUser
 from .serializers import (
     VendorSerializer,
     ProductSerializer,

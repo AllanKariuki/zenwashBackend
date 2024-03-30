@@ -5,12 +5,10 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
 
-from .models import CustomUser, UserProfile, CustomToken
+from .models import CustomUser, CustomToken
 from .serializers import (
     CustomUserSerializer,
-    UserProfileSerializer,
     LoginSerializer
 )
 from .authentication import expired_token_handler, expires_in

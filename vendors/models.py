@@ -1,11 +1,10 @@
 import uuid
 
 from django.db import models
-from account.models import CustomUser, UserProfile
+from account.models import CustomUser
 
 
 class Vendor(models.Model):
-    profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     vendor_code = models.CharField(max_length=100, unique=True, editable=False, null= True)
     description = models.TextField()
 
