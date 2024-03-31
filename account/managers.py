@@ -4,16 +4,12 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, **extra_fields):
+    def create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError(_("Email missing"))
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        password = extra_fields.pop("password")
-        if password:
-            user.password = make_password(password)
-        else:
-            raise ValueError(_("Password missing"))
+        user.password = make_password(password)
         user.save(using=self.db)
         return user
     

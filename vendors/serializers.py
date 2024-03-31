@@ -1,32 +1,12 @@
 from rest_framework import serializers
-from .models import Vendor, Product, Order, Services, BusinessType, ServiceImage
+from .models import Vendor
+from account.models import CustomUser
+
 
 class VendorSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all())
+
     class Meta:
         model = Vendor
         fields = '__all__'
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
-
-class BusinessTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BusinessType
-        fields = '__all__'
-
-class ServicesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Services
-        fields = '__all__'
-
-class ServiceImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ServiceImage
-        fields = '__all__'
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = '__all__'
+        read_only_fields = ['vendor_code']

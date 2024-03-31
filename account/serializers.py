@@ -27,6 +27,7 @@ class CustomUserSerializer(serializers.Serializer):
         instance.save()
         return instance
 
+
 class LoginSerializer(serializers.Serializer):
     email = serializers.CharField()
     password = serializers.CharField()

@@ -30,7 +30,7 @@ class CustomUserViewSet(viewsets.ViewSet):
             )
     
     def create(self, request):
-        serializer = CustomUserSerializer(data= request.data)
+        serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             validated_data = serializer.validated_data
             if CustomUser.objects.filter(email=validated_data["email"]).exists():
@@ -41,7 +41,7 @@ class CustomUserViewSet(viewsets.ViewSet):
             user = CustomUser.objects.create_user(**validated_data)
             
             return Response(
-                    {'detail': user, 'code': 201},
+                    {'detail': 'User Created successfully', 'code': 201},
                     status=status.HTTP_201_CREATED
                 )
         return Response(
