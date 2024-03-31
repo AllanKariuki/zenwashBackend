@@ -10,11 +10,11 @@ from .managers import CustomUserManager
 # Create your models here.
 
 
-class CustomUser(AbstractUser, PermissionsMixin):
+class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_("Email address"), unique = True)
     name = models.CharField(max_length=100)
-    phone_number = models.IntegerField()
+    phone_number = models.CharField(max_length=100)
     national_id = models.IntegerField()
     user_type = models.CharField(max_length=100)
     location_lat = models.CharField(max_length=200)
@@ -22,7 +22,6 @@ class CustomUser(AbstractUser, PermissionsMixin):
     address = models.CharField(max_length=200)
     bio = models.TextField()
     image_url = models.ImageField(upload_to='profile_pics', default='default.jpg', blank=True, null=True)
-    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     password = models.CharField(max_length= 100)
