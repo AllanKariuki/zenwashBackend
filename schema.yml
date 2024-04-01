@@ -1,0 +1,558 @@
+openapi: 3.0.3
+info:
+  title: Zenwash API
+  version: 0.0.0
+  description: API for Zenwash
+paths:
+  /accounts/login/:
+    post:
+      operationId: accounts_login_create
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /accounts/logout/:
+    post:
+      operationId: accounts_logout_create
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /accounts/profiles/:
+    get:
+      operationId: accounts_profiles_retrieve
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: accounts_profiles_create
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /accounts/profiles/{id}/:
+    get:
+      operationId: accounts_profiles_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: accounts_profiles_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: accounts_profiles_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /accounts/users/:
+    get:
+      operationId: accounts_users_retrieve
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: accounts_users_create
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /accounts/users/{id}/:
+    get:
+      operationId: accounts_users_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: accounts_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: accounts_users_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - accounts
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /business_types/:
+    get:
+      operationId: business_types_retrieve
+      tags:
+      - business_types
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: business_types_create
+      tags:
+      - business_types
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /business_types/{id}/:
+    get:
+      operationId: business_types_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - business_types
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: business_types_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - business_types
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: business_types_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - business_types
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /products/:
+    get:
+      operationId: products_retrieve
+      description: |-
+        Args:
+            request: request object
+        Returns:
+            None
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: products_create
+      description: |-
+        "
+        Args:
+            request: request object
+        Returns:
+            None
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /products/{id}/:
+    get:
+      operationId: products_retrieve_2
+      description: |-
+        "
+        Args:
+            request: request object
+            pk: id of the product to be retrieved
+        Returns:
+            None
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: products_update
+      description: |-
+        Args:
+            request: request object
+            pk: id of the product to be updated
+        Returns:
+            None
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: products_destroy
+      description: |-
+        "
+        Args:
+            pk: id of the product to be deleted
+        Returns:
+            None
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this product.
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /service_images/:
+    get:
+      operationId: service_images_retrieve
+      tags:
+      - service_images
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: service_images_create
+      tags:
+      - service_images
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /service_images/{id}/:
+    get:
+      operationId: service_images_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - service_images
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: service_images_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - service_images
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: service_images_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - service_images
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /services/:
+    get:
+      operationId: services_retrieve
+      tags:
+      - services
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: services_create
+      tags:
+      - services
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /services/{id}/:
+    get:
+      operationId: services_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - services
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: services_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - services
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: services_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - services
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /vendors/:
+    get:
+      operationId: vendors_retrieve
+      tags:
+      - vendors
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: vendors_create
+      tags:
+      - vendors
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          description: No response body
+  /vendors/{id}/:
+    get:
+      operationId: vendors_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - vendors
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: vendors_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - vendors
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: vendors_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - vendors
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

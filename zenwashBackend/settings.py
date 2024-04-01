@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'cloudinary_storage',
     'cloudinary',
+    'drf_spectacular',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -96,8 +97,8 @@ DATABASES = {
     }
 }
 
-database_url = os.environ.get('DATABASE_URL')
-DATABASES["default"] = dj_database_url.parse(database_url)
+# database_url = os.environ.get('DATABASE_URL')
+# DATABASES["default"] = dj_database_url.parse(database_url)
 
 #Auth user model
 AUTH_USER_MODEL = "account.CustomUser"
@@ -110,6 +111,7 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
     # ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 PASSWORD_HASHERS = [
@@ -187,3 +189,11 @@ if not DEBUG:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Zenwash API',
+    'DESCRIPTION': 'API for Zenwash',
+    # 'VERSION': '1.0.0',
+    # 'SERVE_INCLUDE_SCHEMA': False,
+    # 'SERVE_PUBLIC': False,
+}
