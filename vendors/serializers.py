@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vendor, CoreServicesType
+from .models import Vendor, CoreServicesType, VendorService
 from account.models import CustomUser
 from account.serializers import CustomUserSerializer
 
@@ -30,4 +30,9 @@ class VendorSerializer(serializers.ModelSerializer):
 class CoreServiceTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CoreServicesType
+        fields = '__all__'
+
+class VendorServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VendorService
         fields = '__all__'
