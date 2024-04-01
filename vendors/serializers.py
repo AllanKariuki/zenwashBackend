@@ -33,6 +33,30 @@ class CoreServiceTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class VendorServiceSerializer(serializers.ModelSerializer):
+    vendor = VendorSerializer(read_only=True)
+    service = CoreServiceTypeSerializer(read_only=True)
+
     class Meta:
         model = VendorService
         fields = '__all__'
+
+    def create(self, validated_data):
+        vendor_id = self.context['request'].data.get('vendor')
+        service_id = self.context['request'].data.get('service')
+        vendor = Vendor.objects.get(id=vendor_id)
+        service = CoreServicesType.objects.get(service_id=service_id)
+        vendor_service = VendorService.objects.create(vendor=vendor, service=service, **validated_data)
+        return vendor_service
+
+    def update(self, instance, validated_data):
+        vendor_id = self.context['request'].data.get('vendor')
+        vendor = Vendor.objects.get(id=vendor_id)
+        service_id = self.context['request'].data.get('service')
+        service = CoreServicesType.objects.get(service_id=service_id)
+        instance.vendor = vendor
+        instance.service = service
+        instance.name = validated_data.get('name', instance.name)
+        instance.motto = validated_data.get('motto', instance.motto)
+        instance.service_image = validated_data.get('service_image', instance.service_image)
+        instance.save()
+        return instance
