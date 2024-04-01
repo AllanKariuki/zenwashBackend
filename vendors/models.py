@@ -38,7 +38,7 @@ class VendorService(models.Model):
 
 
 class CatalogueItem(models.Model):
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    vendor_service = models.ForeignKey(VendorService, on_delete=models.CASCADE)
     item_name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)

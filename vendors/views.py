@@ -2,11 +2,12 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from .models import Vendor, CoreServicesType
+from .models import Vendor, CoreServicesType, VendorService
 from account.models import CustomUser
 from .serializers import (
     VendorSerializer,
-    CoreServiceTypeSerializer
+    CoreServiceTypeSerializer,
+    VendorServiceSerializer
 )
 
 
@@ -152,3 +153,44 @@ class CoreServicesViewSet(viewsets.ViewSet):
             {'detail': 'Service deleted', 'code': 200},
             status=status.HTTP_200_OK
         )
+
+class VendorServiceViewSet(viewsets.ViewSet):
+
+    def create(self, request):
+        serializer = VendorServiceSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response({'detail': serializer.data, 'code': 200}, status=status.HTTP_201_CREATED)
+
+    def list(self, request):
+        services = VendorService.objects.all()
+        serializer = VendorServiceSerializer(services, many=True)
+        if not serializer.data:
+            return Response({'detail': 'No services yet', 'code': 200}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': serializer.data, 'code': 200}, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, pk=None):
+        try:
+            service = VendorService.objects.get(id=pk)
+        except VendorService.DoesNotExist:
+            return Response({'detail': 'Service does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = VendorServiceSerializer(service)
+        return Response({'detail': serializer.data, 'code': 200}, status=status.HTTP_200_OK)
+
+    def update(self, request, pk=None):
+        try:
+            vendor_service = VendorService.objects.get(id=pk)
+        except VendorService.DoesNotExist:
+            return Response({'detail': 'Vendor service does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = VendorServiceSerializer(vendor_service, data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response({'detail': 'Update successful', 'code': 200}, status=status.HTTP_200_OK)
+
+    def destroy(self, pk=None):
+        VendorService.objects.get(id=pk).delete()
+        return Response({'detail': 'Vendor service deleted', 'code': 200}, status=status.HTTP_200_OK)
+
