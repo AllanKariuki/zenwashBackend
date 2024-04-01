@@ -36,6 +36,12 @@ class CoreServiceTypeSerializer(serializers.ModelSerializer):
 class VendorServiceSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer(read_only=True)
     service = CoreServiceTypeSerializer(read_only=True)
+    catalogue_items = serializers.SerializerMethodField('get_catalogue_items')
+
+    def get_catalogue_items(self, obj):
+        catalogue_items = CatalogueItem.objects.filter(vendor_service=obj)
+        serializer = CatalogueItemSerializer(catalogue_items, many=True)
+        return serializer.data
 
     class Meta:
         model = VendorService
