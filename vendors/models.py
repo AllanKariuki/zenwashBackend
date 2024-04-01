@@ -49,9 +49,10 @@ class CatalogueItem(models.Model):
 
 
 class Reviews(models.Model):
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    service = models.ForeignKey(CoreServicesType, on_delete=models.CASCADE)
+    vendor_service = models.ForeignKey(VendorService, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    content = models.TextField()
+    rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
