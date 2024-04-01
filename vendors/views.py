@@ -11,6 +11,10 @@ from .serializers import (
 class VendorViewSet(viewsets.ViewSet):
     def create(self, request):
         user_id = request.data.get("user")
+        try:
+            CustomUser.objects.get(id=user_id)
+        except CustomUser.DoesNotExist:
+            return Response({'detail': 'User does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
 
         if Vendor.objects.filter(user=user_id).exists():
             return Response(
