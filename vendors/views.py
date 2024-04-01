@@ -157,7 +157,7 @@ class CoreServicesViewSet(viewsets.ViewSet):
 class VendorServiceViewSet(viewsets.ViewSet):
 
     def create(self, request):
-        serializer = VendorServiceSerializer(data=request.data)
+        serializer = VendorServiceSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
             return Response({'detail': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
@@ -184,7 +184,7 @@ class VendorServiceViewSet(viewsets.ViewSet):
         except VendorService.DoesNotExist:
             return Response({'detail': 'Vendor service does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = VendorServiceSerializer(vendor_service, data=request.data, partial=True)
+        serializer = VendorServiceSerializer(vendor_service, data=request.data, partial=True, context={'request': request})
         if not serializer.is_valid():
             return Response({'detail': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
