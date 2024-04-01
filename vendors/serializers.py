@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vendor, CoreServicesType, VendorService
+from .models import Vendor, CoreServicesType, VendorService, CatalogueItem
 from account.models import CustomUser
 from account.serializers import CustomUserSerializer
 
@@ -32,6 +32,7 @@ class CoreServiceTypeSerializer(serializers.ModelSerializer):
         model = CoreServicesType
         fields = '__all__'
 
+
 class VendorServiceSerializer(serializers.ModelSerializer):
     vendor = VendorSerializer(read_only=True)
     service = CoreServiceTypeSerializer(read_only=True)
@@ -60,3 +61,9 @@ class VendorServiceSerializer(serializers.ModelSerializer):
         instance.service_image = validated_data.get('service_image', instance.service_image)
         instance.save()
         return instance
+
+
+class CatalogueItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CatalogueItem
+        fields = '__all__'

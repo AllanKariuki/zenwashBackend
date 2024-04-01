@@ -2,12 +2,13 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from .models import Vendor, CoreServicesType, VendorService
+from .models import Vendor, CoreServicesType, VendorService, CatalogueItem
 from account.models import CustomUser
 from .serializers import (
     VendorSerializer,
     CoreServiceTypeSerializer,
-    VendorServiceSerializer
+    VendorServiceSerializer,
+    CatalogueItemSerializer
 )
 
 
@@ -154,6 +155,7 @@ class CoreServicesViewSet(viewsets.ViewSet):
             status=status.HTTP_200_OK
         )
 
+
 class VendorServiceViewSet(viewsets.ViewSet):
 
     def create(self, request):
@@ -194,3 +196,42 @@ class VendorServiceViewSet(viewsets.ViewSet):
         VendorService.objects.get(id=pk).delete()
         return Response({'detail': 'Vendor service deleted', 'code': 200}, status=status.HTTP_200_OK)
 
+
+class CatalogueItemViewSet(viewsets.ViewSet):
+
+    def create(self, request):
+        serializer = CatalogueItemSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response({'detail': 'Catalogue itm added successfully', 'code': 200}, status=status.HTTP_201_CREATED)
+
+    def list(self, request):
+        items = CatalogueItem.objects.all()
+        serializer = CatalogueItemSerializer(items, many=True)
+        if not serializer.data:
+            return Response({'detail': 'No items yet', 'code': 200}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': serializer.data, 'code': 200}, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, pk=None):
+        try:
+            item = CatalogueItem.objects.get(id=pk)
+        except CatalogueItem.DoesNotExist:
+            return Response({'detail': 'Item does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = CatalogueItemSerializer(item)
+        return Response({'detail': serializer.data, 'code': 200}, status=status.HTTP_200_OK)
+
+    def update(self, request, pk=None):
+        try:
+            item = CatalogueItem.objects.get(id=pk)
+        except CatalogueItem.DoesNotExist:
+            return Response({'detail': 'Item does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = CatalogueItemSerializer(item, data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response({'detail': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response({'detail': 'Update successful', 'code': 200}, status=status.HTTP_200_OK)
+
+    def destroy(self, request, pk=None):
+        CatalogueItem.objects.get(id=pk).delete()
+        return Response({'detail': 'Item deleted', 'code': 200}, status=status.HTTP_200_OK)
