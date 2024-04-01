@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vendor
+from .models import Vendor, CoreServicesType
 from account.models import CustomUser
 from account.serializers import CustomUserSerializer
 
@@ -25,3 +25,9 @@ class VendorSerializer(serializers.ModelSerializer):
         instance.vendor_code = validated_data.get('vendor_code', instance.vendor_code)
         instance.save()
         return instance
+
+
+class CoreServiceTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CoreServicesType
+        fields = '__all__'
