@@ -10,7 +10,6 @@ from .serializers import (
 
 class VendorViewSet(viewsets.ViewSet):
     def create(self, request):
-        print(request.data)
         user_id = request.data.get("user")
 
         if Vendor.objects.filter(user=user_id).exists():
@@ -18,7 +17,7 @@ class VendorViewSet(viewsets.ViewSet):
                 {'detail': 'Vendor already exists', 'code': 400},
                 status = status.HTTP_400_BAD_REQUEST
             )
-        serializer = VendorSerializer(data=request.data)
+        serializer = VendorSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
@@ -58,15 +57,15 @@ class VendorViewSet(viewsets.ViewSet):
             status=status.HTTP_200_OK
         )
     def update(self, request, pk = None):
-        profile_id = request.data.get("profile")
+
         try:
             vendor = Vendor.objects.get(id = pk)
-        except UserProfile.DoesNotExist:
+        except Vendor.DoesNotExist:
             return Response(
                 {'detail': 'Vendor does not Exist', 'code': 400},
                 status= status.HTTP_400_BAD_REQUEST
             )
-        serializer = VendorSerializer(vendor, data= request.data, partial=True)
+        serializer = VendorSerializer(vendor, data=request.data, partial=True, context={'request': request})
         if not serializer.is_valid():
             return Response(
                 {'detail': serializer.errors, 'code': 400},
