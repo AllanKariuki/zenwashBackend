@@ -47,21 +47,29 @@ class VendorServiceSerializer(serializers.ModelSerializer):
         model = VendorService
         fields = '__all__'
 
-    def create(self, validated_data):
+    def validate(self, data):
         vendor_id = self.context['request'].data.get('vendor')
         service_id = self.context['request'].data.get('service')
-        vendor = Vendor.objects.get(id=vendor_id)
-        service = CoreServicesType.objects.get(service_id=service_id)
-        vendor_service = VendorService.objects.create(vendor=vendor, service=service, **validated_data)
+        try:
+            self.vendor = Vendor.objects.get(id=vendor_id)
+        except Vendor.DoesNotExist:
+            raise serializers.ValidationError('Vendor does not exist')
+        try:
+            self.service = CoreServicesType.objects.get(service_id=service_id)
+        except CoreServicesType.DoesNotExist:
+            raise serializers.ValidationError('Service does not exist')
+        if VendorService.objects.filter(vendor=self.vendor, service=self.service).exists():
+            raise serializers.ValidationError('Vendor service already exists')
+        return data
+
+
+    def create(self, validated_data):
+        vendor_service = VendorService.objects.create(vendor=self.vendor, service=self.service, **validated_data)
         return vendor_service
 
     def update(self, instance, validated_data):
-        vendor_id = self.context['request'].data.get('vendor')
-        vendor = Vendor.objects.get(id=vendor_id)
-        service_id = self.context['request'].data.get('service')
-        service = CoreServicesType.objects.get(service_id=service_id)
-        instance.vendor = vendor
-        instance.service = service
+        instance.vendor = self.vendor
+        instance.service = self.service
         instance.name = validated_data.get('name', instance.name)
         instance.motto = validated_data.get('motto', instance.motto)
         instance.service_image = validated_data.get('service_image', instance.service_image)
