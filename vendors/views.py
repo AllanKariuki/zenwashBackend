@@ -155,6 +155,12 @@ class CoreServicesViewSet(viewsets.ViewSet):
 class VendorServiceViewSet(viewsets.ViewSet):
 
     def create(self, request):
+        service_id = request.data.get('service')
+        try:
+            CoreServicesType.objects.get(service_id=service_id)
+        except CoreServicesType.DoesNotExist:
+            return Response({'msg': 'Service does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = VendorServiceSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
             return Response({'msg': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
