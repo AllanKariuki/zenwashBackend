@@ -44,7 +44,7 @@ class VendorViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         try:
-            vendor = Vendor.objects.get(id = pk)
+            vendor = Vendor.objects.get(id =pk)
         except Vendor.DoesNotExist:
             return Response (
                 {'msg': "Could not find Vendor", 'code': 400},
@@ -155,12 +155,6 @@ class CoreServicesViewSet(viewsets.ViewSet):
 class VendorServiceViewSet(viewsets.ViewSet):
 
     def create(self, request):
-        service_id = request.data.get('service')
-        try:
-            CoreServicesType.objects.get(service_id=service_id)
-        except CoreServicesType.DoesNotExist:
-            return Response({'msg': 'Service does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
-
         serializer = VendorServiceSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
             return Response({'msg': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
@@ -188,13 +182,19 @@ class VendorServiceViewSet(viewsets.ViewSet):
         except VendorService.DoesNotExist:
             return Response({'msg': 'Vendor service does not exist', 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = VendorServiceSerializer(vendor_service, data=request.data, partial=True, context={'request': request})
+        serializer = VendorServiceSerializer(
+            vendor_service,
+            data=request.data,
+            partial=True,
+            context={'request': request}
+        )
+
         if not serializer.is_valid():
             return Response({'msg': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response({'msg': 'Update successful', 'code': 200}, status=status.HTTP_200_OK)
 
-    def destroy(self, pk=None):
+    def destroy(self, request, pk=None):
         VendorService.objects.get(id=pk).delete()
         return Response({'msg': 'Vendor service deleted', 'code': 200}, status=status.HTTP_200_OK)
 
