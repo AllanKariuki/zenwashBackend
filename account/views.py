@@ -45,7 +45,7 @@ class CustomUserViewSet(viewsets.ViewSet):
                     status=status.HTTP_201_CREATED
                 )
         return Response(
-            {'detail': 'User added successfully', 'code' : 400},
+            {'detail': 'Failed', 'code' : 400},
             status=status.HTTP_400_BAD_REQUEST
         )
         
