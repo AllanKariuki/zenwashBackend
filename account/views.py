@@ -94,7 +94,6 @@ class CustomUserViewSet(viewsets.ViewSet):
         )
 
 
-
 class UserLoginViewSet(viewsets.ViewSet):
     def token_generator(self, user):
         """function to generate a bcrypted token"""
