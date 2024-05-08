@@ -198,7 +198,6 @@ class VendorServiceViewSet(viewsets.ViewSet):
         VendorService.objects.get(id=pk).delete()
         return Response({'msg': 'Vendor service deleted', 'code': 200}, status=status.HTTP_200_OK)
 
-
 class CatalogueItemViewSet(viewsets.ViewSet):
 
     def create(self, request):
