@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from vendors.models import Vendor, CoreServicesType, VendorService, CatalogueItem, Reviews
 from vendors.serializers import VendorSerializer, CoreServiceTypeSerializer, VendorServiceSerializer, CatalogueItemSerializer
 from .utils import get_nearby_services
+from .models import Order, OrderItem
 
 class ServicesListingViewset(viewsets.ViewSet):
 
@@ -30,3 +31,20 @@ class ServicesListingViewset(viewsets.ViewSet):
             {'data': serializer.data},
             status=status.HTTP_200_OK
         )
+
+class OrderViewset(viewsets.ViewSet):
+
+    def list(self, request):
+        pass
+
+    def create(self, request):
+        pass
+
+    def retrieve(self, request, pk=None):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
