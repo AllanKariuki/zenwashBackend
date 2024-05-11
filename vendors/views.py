@@ -198,6 +198,7 @@ class VendorServiceViewSet(viewsets.ViewSet):
         VendorService.objects.get(id=pk).delete()
         return Response({'msg': 'Vendor service deleted', 'code': 200}, status=status.HTTP_200_OK)
 
+
 class CatalogueItemViewSet(viewsets.ViewSet):
 
     def create(self, request):
@@ -205,7 +206,7 @@ class CatalogueItemViewSet(viewsets.ViewSet):
         if not serializer.is_valid():
             return Response({'msg': serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
-        return Response({'msg': 'Catalogue itm added successfully', 'code': 200}, status=status.HTTP_201_CREATED)
+        return Response({'msg': 'Catalogue item added successfully', 'code': 200}, status=status.HTTP_201_CREATED)
 
     def list(self, request):
         items = CatalogueItem.objects.all()
