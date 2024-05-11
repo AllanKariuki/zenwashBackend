@@ -41,17 +41,21 @@ class OrderViewset(viewsets.ViewSet):
     def create(self, request):
         # Create an order
         order_data = {
-            "user": 1,
+            "user": request.data.get('user'),
+            "total_amount": request.data.get('total_amount')
         }
         order_serializer = OrderSerializer(data=order_data)
         if not order_serializer.is_valid():
             return Response({'msg': order_serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
-
-        order_item_serializer = OrderItemSerializer(data=request.data, context={'request': request})
-        if not order_item_serializer.is_valid():
-            return Response({'msg': order_item_serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
-
-        order_item_serializer.save()
+        order=order_serializer.save()
+        items = request.data.get('items', [])
+        for item in items:
+            item['order'] = order.id
+            order_item_serializer = OrderItemSerializer(data=item, context={'request': request})
+            if not order_item_serializer.is_valid():
+                return Response({'msg': order_item_serializer.errors, 'code': 400}, status=status.HTTP_400_BAD_REQUEST)
+            order_item_serializer.save()
+        return Response({'msg': 'Order created successfully', 'code': 201}, status=status.HTTP_201_CREATED)
 
 
     def retrieve(self, request, pk=None):

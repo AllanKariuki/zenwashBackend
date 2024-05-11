@@ -3,29 +3,39 @@ from rest_framework import serializers
 from .models import Order, OrderItem
 from account.serializers import CustomUserSerializer
 from vendors.serializers import VendorServiceSerializer, VendorSerializer, CatalogueItemSerializer
-from vendors.models import VendorService, CatalogueItem, Vendors
+from vendors.models import VendorService, CatalogueItem, Vendor
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    service=VendorServiceSerializer(required=False)
-    vendor=VendorSerializer(required=False)
-    item=CatalogueItemSerializer(required=True)
+    service=VendorServiceSerializer(read_only=True)
+    vendor=VendorSerializer(read_only=True)
+    item=CatalogueItemSerializer(read_only=True)
+    service_id=serializers.CharField(write_only=True)
+    vendor_id=serializers.IntegerField(write_only=True)
+    item_id=serializers.IntegerField(write_only=True)
 
     class Meta:
         model=OrderItem
         fields="__all__"
 
     def validate(self, data):
-        service_id = self.context['request'].get('service')
-        vendor_id = self.context['request'].get('vendor')
-        item_id = self.context['request'].get('item')
+        service_id = data.get('service_id')
+        vendor_id = data.get('vendor_id')
+        item_id = data.get('item_id')
+
+        if service_id is None:
+            raise serializers.ValidationError({"service_id": "This field is required."})
+        if vendor_id is None:
+            raise serializers.ValidationError({"vendor_id": "This field is required."})
+        if item_id is None:
+            raise serializers.ValidationError({"item_id": "This field is required."})
         try:
-            self.service = VendorService.objects.get(service=service_id)
+            self.service = VendorService.objects.get(id=service_id)
         except VendorService.DoesNotExist:
             raise serializers.ValidationError('Service Does not exist')
         try:
-            self.vendor = Vendors.objects.get(id=vendor_id)
-        except Vendors.DoesNotExist:
+            self.vendor = Vendor.objects.get(id=vendor_id)
+        except Vendor.DoesNotExist:
             raise serializers.ValidationError('Vendor Does not exist')
         try:
             self.item = CatalogueItem.objects.get(id=item_id)
@@ -47,7 +57,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer(require=False)
+    # user = CustomUserSerializer(read_only=False)
     item = serializers.SerializerMethodField('get_order_items')
 
     class Meta:
